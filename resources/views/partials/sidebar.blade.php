@@ -1,10 +1,19 @@
 <div class="sidebar-brand">
     <a href="{{ url('/') }}">
-        <img src="{{ asset('assets/img/logo.png') }}" style="width: 30px;"> Inventaris
+        <img src="{{ asset('img/logo.png') }}" style="width: 30px;"> Inventaris
     </a>
 </div>
 <ul class="sidebar-menu">
     @foreach ($users as $user)
+        <li class="dropdown">
+          <a href="" class="nav-link has-dropdown"><i class="fas fa-user text-danger"></i><span>Hai, ADMIN</span></a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="nav-link text-danger" href="{{ url('logout') }}" onclick="return confirm('Yakin ingin Logout?')">
+                <i class="fas fa-sign-out-alt"></i> Logout</a>
+              </li>
+          </ul>
+        </li>
         <li class="menu-header"><b>{{ ucfirst($user->level) }}</b></li>
         <li><a href="{{ url('/') }}" class="nav-link"><i class="fas fa-fire"></i> Dashboard</a></li>
         
