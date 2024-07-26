@@ -5,8 +5,8 @@
 </head>
 <body>
     <div id="app">
-        <div class="main-wrapper">
-            @include('partials.navbar')
+        <div class="main-wrapper main-wrapper-1">
+            @include('partials.header')
 
             <div class="main-sidebar">
                 @include('partials.sidebar')

@@ -1,7 +1,10 @@
 <div class="navbar-bg"></div>
 <nav class="navbar navbar-expand-lg main-navbar">
-    <a href="#" class="navbar-brand">Kafe Kopi Kampung Ambarukmo Yogyakarta</a>
-    <div class="navbar-nav">
-        <a href="#" class="nav-link nav-link-lg" data-toggle="sidebar"><i class="fas fa-bars"></i></a>
-    </div>
+  <ul class="navbar-nav mr-3">
+    <li><a href="#" data-toggle="sidebar" class="nav-link nav-link d-lg-none"><i class="fas fa-bars"></i></a></li>
+    <!-- <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li> -->
+  </ul>
+  <a class="navbar-brand text-right" href="">
+    Kafe Kopi Kampung Ambarukmo Yogyakarta
+  </a>
 </nav>
