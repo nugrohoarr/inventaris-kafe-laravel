@@ -1,6 +1,16 @@
-@include('partials.head')
-@include('partials.header')
-@include('partials.sidebar')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    @include('partials.head')
+</head>
+<body>
+    <div id="app">
+        <div class="main-wrapper main-wrapper-1">
+            @include('partials.header')
+
+            <div class="main-sidebar">
+                @include('partials.sidebar')
+            </div>
 
 <div class="main-wrapper main-wrapper-1">
   @yield('content')
