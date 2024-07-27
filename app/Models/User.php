@@ -1,8 +1,6 @@
 <?php
-
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -12,11 +10,13 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    protected $primaryKey = 'id_user';
+    protected $table = 'users';
+    public $timestamps = false;
+
+    // Set auto-incrementing to false if id_user is not auto-incrementing
+    public $incrementing = true;
+
     protected $fillable = [
         'nama',
         'username',
@@ -24,96 +24,59 @@ class User extends Authenticatable
         'level',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-    /**
-     * Automatically hash the password when it is set.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = Hash::make($value);
-    }
-
-    /**
-     * Retrieve all user data.
-     *
-     * @return array
-     */
     public static function getData()
     {
-        return self::all()->toArray();
+        return self::all();
     }
 
-    /**
-     * Retrieve a user by ID for updating.
-     *
-     * @param  int  $id
-     * @return User|null
-     */
     public static function getUserUpdate($id)
     {
         return self::find($id);
     }
 
-    /**
-     * Create a new user.
-     *
-     * @param  array  $data
-     * @return User
-     */
     public static function simpanUser($data)
     {
-        $data['password'] = md5($data['password']); // Use md5 to match the original CodeIgniter functionality
         return self::create($data);
     }
 
-    /**
-     * Update an existing user.
-     *
-     * @param  int  $id
-     * @param  array  $data
-     * @return bool
-     */
     public static function updateUser($id, $data)
     {
         $user = self::find($id);
-        if (isset($data['password']) && $data['password'] !== '') {
-            $data['password'] = md5($data['password']); // Use md5 to match the original CodeIgniter functionality
-        } else {
-            unset($data['password']);
-        }
-        return $user->update($data);
+        return $user ? $user->update($data) : false;
     }
 
-    /**
-     * Delete a user.
-     *
-     * @param  int  $id
-     * @return bool|null
-     */
+    public static function getLevel($username)
+    {
+        return self::where('username', $username)->first();
+    }
+
     public static function deleteUser($id)
     {
         $user = self::find($id);
-        return $user->delete();
+        return $user ? $user->delete() : false;
     }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = md5($value);
+    }
+
+    public static function validateUser($username, $password)
+    {
+    $user = self::where('username', $username)->first();
+
+    if ($user) {
+        // Check if the password matches using MD5 hash
+        if (md5($password) === $user->password) {
+            return true;
+        }
+    }
+    return false;
+}
+
 }

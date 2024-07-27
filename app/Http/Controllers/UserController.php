@@ -1,54 +1,71 @@
+<?php
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     public function index()
     {
         $users = User::all();
-        return view('users.index', compact('users'));
+        $level = Auth::user();
+        return view('user.userList', compact('users', 'level'));
+    }
+
+    public function create()
+    {
+        $level = Auth::user();
+        return view('user.userForm', compact('level'));
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $data = $request->validate([
             'nama' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'level' => 'required|string|max:255',
+            'level' => 'required|in:administrator,manajemen',
         ]);
 
-        $validated['password'] = bcrypt($validated['password']);
-        User::create($validated);
+        $data['password'] = Hash::make($data['password']);
+        User::create($data);
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('success', 'User created successfully.');
+    }
+
+    public function edit(User $user)
+    {
+        $level = Auth::user();
+        return view('user.userForm', compact('user', 'level'));
     }
 
     public function update(Request $request, User $user)
     {
-        $validated = $request->validate([
+        $data = $request->validate([
             'nama' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,' . $user->id,
             'password' => 'nullable|string|min:8',
-            'level' => 'required|string|max:255',
+            'level' => 'required|in:administrator,manajemen',
         ]);
 
         if ($request->filled('password')) {
-            $validated['password'] = bcrypt($validated['password']);
+            $data['password'] = Hash::make($data['password']);
         } else {
-            unset($validated['password']);
+            unset($data['password']);
         }
 
-        $user->update($validated);
+        $user->update($data);
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('success', "User {$user->nama} updated successfully.");
     }
 
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('success', "User {$user->nama} deleted successfully.");
     }
 }

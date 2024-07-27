@@ -2,52 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
-    public function showLoginForm()
+    public function index()
     {
-        if (!Auth::check()) {
-            return view('loginForm');
-        } else {
-            return redirect()->route('welcome');
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
         }
+        return view('auth.login');
     }
 
     public function login(Request $request)
     {
-        $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
+        $credentials = $request->only('username', 'password');
 
-        $credentials = [
-            'username' => $request->input('username'),
-            'password' => $request->input('password'),
-        ];
-
-        if (Auth::attempt($credentials)) {
-            $request->session->regenerate();
-            return redirect()->intended('welcome');
-        } else {
-            return back()->withErrors([
-                'login' => 'Username or Password is incorrect.',
-            ])->withInput();
+        if (User::validateUser($credentials['username'], $credentials['password'])) {
+            $user = User::where('username', $credentials['username'])->first();
+            Auth::login($user);
+            
+            // Simpan level user dalam sesi
+            session(['user_level' => $user->level]);
+            
+            return redirect()->route('dashboard');
         }
+
+        return view('auth.login', [
+            'keluar' => '<div class="alert alert-danger alert-dismissible show fade"><strong>Username atau Password Salah!</strong><button class="close" data-dismiss="alert"><span>&times;</span></button></div>'
+        ]);
     }
 
     public function logout()
     {
         Auth::logout();
-        Session::flush();
-        return redirect()->route('loginForm')->with('status', 'You have been logged out.');
+        session()->forget('user_level');
+        return redirect()->route('login');
     }
 
-    public function showForgotPasswordForm()
+    public function forgotPassword()
     {
-        return view('forgotPassword');
+        return view('auth.forgot-password');
     }
 }

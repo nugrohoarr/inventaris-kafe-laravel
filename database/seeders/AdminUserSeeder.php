@@ -3,12 +3,12 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
-class UserSeeder extends Seeder
+class AdminUserSeeder extends Seeder
 {
-     /**
+    /**
      * Run the database seeds.
      *
      * @return void
@@ -16,10 +16,10 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::create([
-            'nama' => 'Administrator',
-            'username' => 'admin',
-            'password' => Hash::make('admin'),
-            'level' => 'administrator',
+            'nama' => 'peminjam1',
+            'username' => 'peminjam',
+            'password' => Hash::make('peminjam'),
+            'level' => 'peminjam',
         ]);
         User::create([
             'nama' => 'Dummy User 1',

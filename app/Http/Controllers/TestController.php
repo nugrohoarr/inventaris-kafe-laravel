@@ -13,15 +13,10 @@ class TestController extends Controller
             (object)[
                 'id' => 1,
                 'nama' => 'John Doe',
-                'level' => 'manajemen',
-            ],
-            (object)[
-                'id' => 2,
-                'nama' => 'Jane Smith',
-                'level' => 'peminjam',
+                'level' => 'administrator',
             ],
         ];
 
-        return view('welcome', compact('users'));
+        return view('dashboard.dashboard', compact('users'));
     }
 }
