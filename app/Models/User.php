@@ -11,7 +11,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $primaryKey = 'id_user';
-    protected $table = 'users';
+    protected $table = 'user';
     public $timestamps = false;
 
     // Set auto-incrementing to false if id_user is not auto-incrementing

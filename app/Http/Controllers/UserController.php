@@ -26,7 +26,7 @@ class UserController extends Controller
     {
         $data = $request->validate([
             'nama' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users',
+            'username' => 'required|string|max:255|unique:user',
             'password' => 'required|string|min:8',
             'level' => 'required|in:administrator,manajemen',
         ]);
@@ -49,7 +49,7 @@ class UserController extends Controller
     {
         $data = $request->validate([
             'nama' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username,' . $user->id_user . ',id_user',
+            'username' => 'required|string|max:255|unique:user,username,' . $user->id_user . ',id_user',
             'password' => 'nullable|string|min:8',
             'level' => 'required|in:administrator,manajemen',
         ]);
