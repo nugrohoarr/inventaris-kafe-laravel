@@ -31,11 +31,13 @@ class UserController extends Controller
             'level' => 'required|in:administrator,manajemen',
         ]);
 
-        $data['password'] = Hash::make($data['password']);
+        // // Hash password using MD5
+        // $data['password'] = md5($data['password']);
         User::create($data);
 
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
+        return redirect()->route('users.index')->with('success', 'Berhasil menambahkan user');
     }
+
 
     public function edit(User $user)
     {
@@ -47,25 +49,25 @@ class UserController extends Controller
     {
         $data = $request->validate([
             'nama' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+            'username' => 'required|string|max:255|unique:users,username,' . $user->id_user . ',id_user',
             'password' => 'nullable|string|min:8',
             'level' => 'required|in:administrator,manajemen',
         ]);
 
         if ($request->filled('password')) {
-            $data['password'] = Hash::make($data['password']);
+            $data['password'] = ($request->password); 
         } else {
-            unset($data['password']);
+            unset($data['password']);  
         }
 
         $user->update($data);
 
-        return redirect()->route('users.index')->with('success', "User {$user->nama} updated successfully.");
+        return redirect()->route('users.index')->with('success', "User {$user->nama} berhasil diperbarui.");
     }
 
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('users.index')->with('success', "User {$user->nama} deleted successfully.");
+        return redirect()->route('users.index')->with('success', "User {$user->nama} berhasil dihapus.");
     }
 }
