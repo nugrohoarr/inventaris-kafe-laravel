@@ -20,6 +20,16 @@
                             </div>
                         </div>
                         <div class="card-body">
+                            <!-- Success and Error Messages -->
+                            @if(session('sukses'))
+                                <div class="alert alert-success">
+                                    {{ session('sukses') }}
+                                </div>
+                            @elseif(session('error'))
+                                <div class="alert alert-danger">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
                             <div class="table-responsive">
                                 <table class="table table-striped" id="table-1">
                                     <thead>

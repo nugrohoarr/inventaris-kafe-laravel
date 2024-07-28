@@ -11,6 +11,14 @@
 
         <div class="section-body">
             <div class="row">
+            <div class="col-lg-12">
+                                <!-- Display success or error message -->
+                                @if (session('sukses'))
+                                    <div class="alert alert-success">{{ session('sukses') }}</div>
+                                @elseif (session('error'))
+                                    <div class="alert alert-danger">{{ session('error') }}</div>
+                                @endif
+                            </div>
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">

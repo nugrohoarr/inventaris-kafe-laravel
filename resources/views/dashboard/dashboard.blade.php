@@ -36,7 +36,7 @@
             </div>
           </div>
           <div class="col-12">
-            <a href="{{ url('barang/tambahbarang') }}"><button class="col-12 btn btn-lg btn-info mb-2" type="submit"><i class="fas fa-plus"></i> Barang Baru</button></a>
+            <a href="{{ route('barang.create') }}"><button class="col-12 btn btn-lg btn-info mb-2" type="submit"><i class="fas fa-plus"></i> Barang Baru</button></a>
           </div>
         </div>
       @elseif ($level->level == 'manajemen')
@@ -50,12 +50,12 @@
                 <div class="card-header">
                   <h4>Total Data Barang</h4>
                 </div>
-                <div class="card-body"></div>
+                <div class="card-body">{{ $barangs }}</div>
               </div>
             </div>
           </div>
           <div class="col-12">
-            <a href="{{ url('barang/tambahbarang') }}"><button class="col-12 btn btn-lg btn-info mb-2" type="submit"><i class="fas fa-plus"></i> Barang Baru</button></a>
+            <a href="{{ route('barang.create') }}"><button class="col-12 btn btn-lg btn-info mb-2" type="submit"><i class="fas fa-plus"></i> Barang Baru</button></a>
           </div>
         </div>
       @endif

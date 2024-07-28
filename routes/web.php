@@ -11,6 +11,9 @@ use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\BarangKeluarController;
 
 
+Route::get('/', function () {
+    return redirect()->route('login');
+});
 
 // Group routes that require authentication
 Route::middleware(['auth'])->group(function () {
@@ -24,14 +27,13 @@ Route::middleware(['auth'])->group(function () {
 
     // Barang routes using resource controller
     Route::resource('barang', BarangController::class);
-
     // Barang Masuk routes
     Route::resource('barang-masuk', BarangMasukController::class);
     // Barang Keluar routes
     Route::resource('barang-keluar', BarangKeluarController::class);
 
     // Dashboard route
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 });
 
 
@@ -43,7 +45,6 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('/test', [TestController::class, 'index']);
 
 // Route::get('/', function () {
 //     return view('login');
