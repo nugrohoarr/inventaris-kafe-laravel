@@ -9,7 +9,6 @@ class BarangKeluar extends Model
     protected $table = 'barang_keluar';
     protected $primaryKey = 'id_keluar';
     public $timestamps = false;
-    public $tgl_keluar = false;
 
     protected $fillable = [
         'id_barang',
