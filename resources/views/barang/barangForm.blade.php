@@ -11,11 +11,11 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        @if (isset($barangId->id_barang))
+                        @if (isset($barang->id_barang))
                             <!-- If updating, show 'Edit Barang' -->
                             <h4>Edit Barang</h4>
                             <!-- Form action URL for update -->
-                            <form action="{{ route('barang.update', $barangId->id_barang) }}" method="POST">
+                            <form action="{{ route('barang.update', $barang->id_barang) }}" method="POST">
                                 @method('PUT')
                         @else
                             <!-- If adding, show 'Tambah Barang' -->
@@ -37,10 +37,10 @@
 
                                 <div class="form-group">
                                     <label for="nama_barang">Nama Barang</label>
-                                    <input id="nama_barang" name="nama_barang" type="text" class="form-control" value="{{ old('nama_barang', isset($barangId->nama_barang) ? $barangId->nama_barang : '') }}">
+                                    <input id="nama_barang" name="nama_barang" type="text" class="form-control" value="{{ old('nama_barang', isset($barang->nama_barang) ? $barang->nama_barang : '') }}">
                                 </div>
                                 <div class="form-group text-right">
-                                    @if (isset($barangId->id_barang))
+                                    @if (isset($barang->id_barang))
                                         <button class="btn btn-info mr-1" type="submit">Simpan</button>
                                     @else
                                         <button class="btn btn-info mr-1" type="submit">Simpan & Lanjut</button>
