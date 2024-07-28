@@ -33,10 +33,15 @@ class User extends Authenticatable
     {
         return self::all();
     }
-
-    public static function getUserUpdate($id)
+    public function getKeyName()
     {
-        return self::find($id);
+        return 'id_user';
+    }
+
+
+    public static function getUserUpdate($id_user)
+    {
+        return self::find($id_user);
     }
 
     public static function simpanUser($data)
@@ -44,9 +49,9 @@ class User extends Authenticatable
         return self::create($data);
     }
 
-    public static function updateUser($id, $data)
+    public static function updateUser($id_user, $data)
     {
-        $user = self::find($id);
+        $user = self::find($id_user);
         return $user ? $user->update($data) : false;
     }
 
@@ -68,15 +73,13 @@ class User extends Authenticatable
 
     public static function validateUser($username, $password)
     {
-    $user = self::where('username', $username)->first();
+        $user = self::where('username', $username)->first();
 
-    if ($user) {
-        // Check if the password matches using MD5 hash
-        if (md5($password) === $user->password) {
-            return true;
+        if ($user && md5($password) === $user->password) {
+            return $user;
         }
+
+        return false;
     }
-    return false;
 }
 
-}

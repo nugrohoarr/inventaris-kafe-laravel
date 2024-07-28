@@ -13,7 +13,7 @@ class Login extends Model
     {
         $user = self::where('username', $username)->first();
 
-        if ($user && Hash::check($password, $user->password)) {
+        if ($user && md5($password) === $user->password) {
             return $user;
         }
 
