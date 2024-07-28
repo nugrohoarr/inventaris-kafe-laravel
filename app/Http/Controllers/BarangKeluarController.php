@@ -35,10 +35,10 @@ class BarangKeluarController extends Controller
             'jml_keluar' => 'required|numeric',
             'deskripsi' => 'nullable|string',
         ]);
-
+        $request['tgl_keluar'] = now();
         BarangKeluar::create($request->all());
 
-        return redirect()->route('barang-keluar.index')->with('sukses', 'Barang Keluar berhasil ditambahkan');
+        return redirect()->back()->with('sukses', 'Barang Keluar berhasil ditambahkan');
     }
 
     // Menampilkan form untuk mengedit barang keluar
@@ -62,7 +62,7 @@ class BarangKeluarController extends Controller
         $barang_keluar = BarangKeluar::findOrFail($id);
         $barang_keluar->update($request->all());
 
-        return redirect()->route('barang-keluar.index')->with('sukses', 'Barang Keluar berhasil diperbarui');
+        return redirect()->back()->with('sukses', 'Barang Keluar berhasil diperbarui');
     }
 
     // Menghapus barang keluar
@@ -71,6 +71,6 @@ class BarangKeluarController extends Controller
         $barang_keluar = BarangKeluar::findOrFail($id);
         $barang_keluar->delete();
 
-        return redirect()->route('barang-keluar.index')->with('sukses', 'Barang Keluar berhasil dihapus');
+        return redirect()->back()->with('sukses', 'Barang Keluar berhasil dihapus');
     }
 }

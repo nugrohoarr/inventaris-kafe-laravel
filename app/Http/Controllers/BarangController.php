@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Barang;
+use App\Models\BarangMasuk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,11 +12,23 @@ class BarangController extends Controller
 {
     public function index()
     {
-        $users = User::all();
-        $level = Auth::user();
-        $barangs = Barang::all();
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('login');
+        }
 
-        return view('barang.barangList', compact('barangs','users', 'level'));
+        $barangs = Barang::all()->map(function($barang) {
+            $barangMasuk = BarangMasuk::where('id_barang', $barang->id_barang)->sum('jml_masuk');
+            $barang->jml_masuk = $barangMasuk;
+            return $barang;
+        });
+
+        $data = [
+            'level' => $user,
+            'barangs' => $barangs,
+        ];
+
+        return view('barang.barangList', $data);
     }
 
     public function create()
@@ -31,18 +44,17 @@ class BarangController extends Controller
             'nama_barang' => 'required|string|max:255',
         ]);
 
-        Barang::create($data);
+        $barang = Barang::create($data);
 
-        $barangId = Barang::where('nama_barang', $data['nama_barang'])->first();
-        return view('barang.barangForm', compact('barangId', 'level'));
+        return redirect()->route('barang.index')->with('sukses', 'Barang berhasil ditambahkan');
     }
 
     public function edit($id)
     {
-        $barangId = Barang::find($id);
+        $barang = Barang::find($id);
         $level = Auth::user();
 
-        return view('barang.barangForm', compact('barangId', 'level'));
+        return view('barang.barangForm', compact('barang', 'level'));
     }
 
     public function update(Request $request, $id)
@@ -54,15 +66,13 @@ class BarangController extends Controller
         $barang = Barang::find($id);
         $barang->update($data);
 
-        $level = Auth::user()->level; // Adjust this based on your level retrieval logic
-        return view('barang.barangForm', compact('barang', 'level'))
-               ->with('sukses', 'Update id Barang '.$id.' Berhasil');
+        return redirect()->route('barang.index')->with('sukses', 'Update id Barang '.$id.' Berhasil');
     }
 
     // Uncomment if you want to add delete functionality
     // public function confirmDelete($id)
     // {
-    //     $level = Auth::user()->level; // Adjust this based on your level retrieval logic
+    //     $level = Auth::user();
     //     return view('barang.confirm_delete', compact('id', 'level'));
     // }
 
