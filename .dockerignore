@@ -1,0 +1,30 @@
+# Ignore node modules and vendor
+/node_modules
+/vendor
+
+# Ignore hidden files
+.*.swp
+*.log
+*.env
+
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore configuration files
+!.env.example
+
+# Ignore other files that should not be in the image
+/tests
+/storage/*.key
+/storage/*.pdf
+/storage/*.xls
+/storage/*.xlsx
+/storage/*.csv
+/public/storage
+/public/hot
+/public/build
+/public/mix-manifest.json
+/public/storage
+/public/css/*.map
+/public/js/*.map
